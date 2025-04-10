@@ -5,11 +5,8 @@
  */
 #include "connect4.hpp"
 
-ConnectFourAction::ConnectFourAction(int col, PlayerMarker playerMarker) :
+inline ConnectFourAction::ConnectFourAction(int col, PlayerMarker playerMarker) :
         col(col), playerMarker(playerMarker) {}
-
-ConnectFourAction::ConnectFourAction(const ConnectFourAction &other) :
-        col(other.col), playerMarker(other.playerMarker) {}
 
 ConnectFourAction &ConnectFourAction::operator=(const ConnectFourAction &other) {
     col = other.col;
@@ -17,7 +14,7 @@ ConnectFourAction &ConnectFourAction::operator=(const ConnectFourAction &other) 
     return *this;
 }
 
-bool ConnectFourAction::isEmpty() const {
+inline bool ConnectFourAction::isEmpty() const {
     return playerMarker == EMPTY_MARKER || col == -1;
 }
 
