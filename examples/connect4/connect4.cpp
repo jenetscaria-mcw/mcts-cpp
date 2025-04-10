@@ -28,7 +28,7 @@ std::string ConnectFourAction::toString() const {
     return ss.str();
 }
 
-int ConnectFourGameState::getColHeight(int col) const {
+inline int ConnectFourGameState::getColHeight(int col) const {
     return colHeight.at(col);
 }
 
