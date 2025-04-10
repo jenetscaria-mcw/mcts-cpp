@@ -75,7 +75,7 @@ public:
      * Represents a state as a string.
      * @return state as string.
      */
-    virtual std::string toString() const { return "GameState::toString not implemented"; };
+    inline virtual std::string toString() const { return "GameState::toString not implemented"; };
 };
 
 #endif

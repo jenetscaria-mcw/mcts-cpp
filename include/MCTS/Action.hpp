@@ -36,7 +36,7 @@ struct GameAction {
      * Represents an action as a string.
      * @return action as string.
      */
-    virtual std::string toString() const { return "GameAction::toString not implemented"; };
+    inline virtual std::string toString() const { return "GameAction::toString not implemented"; };
 };
 
 #endif

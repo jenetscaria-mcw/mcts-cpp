@@ -9,7 +9,7 @@
 #include <random>
 
 // Random number generator using Mersenne Twister
-static std::random_device RD;
-static std::mt19937 RNG(RD());
+inline static std::random_device RD;
+inline static std::mt19937 RNG(RD());
 
 #endif
