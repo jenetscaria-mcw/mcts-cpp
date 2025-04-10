@@ -23,9 +23,7 @@ bool ConnectFourAction::operator==(const ConnectFourAction &other) const {
 }
 
 std::string ConnectFourAction::toString() const {
-    std::stringstream ss;
-    ss << "col = " << col << ", player = " << playerMarker;
-    return ss.str();
+    return "col = " + std::to_string(col) + ", player = " + std::to_string(playerMarker);
 }
 
 inline int ConnectFourGameState::getColHeight(int col) const {
@@ -34,8 +32,12 @@ inline int ConnectFourGameState::getColHeight(int col) const {
 
 void ConnectFourGameState::resetBoard() {
     for (int col = 0; col < WIDTH; ++col) {
-        for (int row = 0; row < HEIGHT; ++row)
-            board[row][col] = EMPTY_MARKER;
+        board[0][col] = EMPTY_MARKER;
+        board[1][col] = EMPTY_MARKER;
+        board[2][col] = EMPTY_MARKER;
+        board[3][col] = EMPTY_MARKER;
+        board[4][col] = EMPTY_MARKER;
+        board[5][col] = EMPTY_MARKER;
         colHeight[col] = 0;
     }
 }
@@ -45,9 +47,13 @@ void ConnectFourGameState::switchPlayer() {
 }
 
 bool ConnectFourGameState::checkDraw() const {
-    for (int col = 0; col < WIDTH; ++col)
-        if (getColHeight(col) < HEIGHT)
-            return false;
+    if (getColHeight(0) < HEIGHT) return false;
+    if (getColHeight(1) < HEIGHT) return false;
+    if (getColHeight(2) < HEIGHT) return false;
+    if (getColHeight(3) < HEIGHT) return false;
+    if (getColHeight(4) < HEIGHT) return false;
+    if (getColHeight(5) < HEIGHT) return false;
+    if (getColHeight(6) < HEIGHT) return false;
 
     return true;
 }
@@ -303,8 +309,13 @@ std::string ConnectFourGameState::toString() const {
     std::stringstream ss;
 
     for (int row = HEIGHT - 1; row >= 0; --row) {
-        for (int col = 0; col < WIDTH; ++col)
-            ss << board[row][col];
+        ss << board[row][0];
+        ss << board[row][1];
+        ss << board[row][2];
+        ss << board[row][3];
+        ss << board[row][4];
+        ss << board[row][5];
+        ss << board[row][6];
         ss << std::endl;
     }
 
