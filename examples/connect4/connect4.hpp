@@ -33,12 +33,12 @@ struct ConnectFourAction : public GameAction<ConnectFourAction> {
 
     ConnectFourAction(int col, PlayerMarker playerMarker);
 
-    inline ConnectFourAction(const ConnectFourAction &other) :
+    inline __attribute__((always_inline)) ConnectFourAction(const ConnectFourAction &other) :
     col(other.col), playerMarker(other.playerMarker) {}
 
     ConnectFourAction &operator=(const ConnectFourAction &other);
 
-    inline bool isEmpty() const override;
+    inline __attribute__((always_inline)) bool isEmpty() const override;
 
     bool operator==(const ConnectFourAction &other) const override;
 
