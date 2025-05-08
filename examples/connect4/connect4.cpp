@@ -5,11 +5,9 @@
  */
 #include "connect4.hpp"
 
-ConnectFourAction::ConnectFourAction(int col, PlayerMarker playerMarker) :
-        col(col), playerMarker(playerMarker) {}
+ConnectFourAction::ConnectFourAction(int col, PlayerMarker playerMarker) : col(col), playerMarker(playerMarker) {}
 
-ConnectFourAction::ConnectFourAction(const ConnectFourAction &other) :
-        col(other.col), playerMarker(other.playerMarker) {}
+ConnectFourAction::ConnectFourAction(const ConnectFourAction &other) : col(other.col), playerMarker(other.playerMarker) {}
 
 ConnectFourAction &ConnectFourAction::operator=(const ConnectFourAction &other) {
     col = other.col;
@@ -36,10 +34,15 @@ int ConnectFourGameState::getColHeight(int col) const {
 }
 
 void ConnectFourGameState::resetBoard() {
+    for (int row = 0; row < HEIGHT; ++row) {
+        char *rowPtr = board[row];
+        for (int col = 0; col < WIDTH; ++col) {
+            rowPtr[col] = EMPTY_MARKER;
+        }
+    }
+    auto &mapref = colHeight;
     for (int col = 0; col < WIDTH; ++col) {
-        for (int row = 0; row < HEIGHT; ++row)
-            board[row][col] = EMPTY_MARKER;
-        colHeight[col] = 0;
+        mapref[col] = 0;
     }
 }
 
@@ -48,8 +51,9 @@ void ConnectFourGameState::switchPlayer() {
 }
 
 bool ConnectFourGameState::checkDraw() const {
+    const auto &mapref = colHeight;
     for (int col = 0; col < WIDTH; ++col)
-        if (getColHeight(col) < HEIGHT)
+        if (mapref.at(col) < HEIGHT)
             return false;
 
     return true;
@@ -173,29 +177,41 @@ GameResult ConnectFourGameState::calculateGameResult() const {
     return NOT_FINISHED;
 }
 
-ConnectFourGameState::ConnectFourGameState(PlayerMarker startingPlayerMarker) :
-        currentPlayerMarker(startingPlayerMarker),
-        gameResult(NOT_FINISHED) {
+ConnectFourGameState::ConnectFourGameState(PlayerMarker startingPlayerMarker) : currentPlayerMarker(startingPlayerMarker),
+                                                                                gameResult(NOT_FINISHED) {
     resetBoard();
 }
 
-ConnectFourGameState::ConnectFourGameState(const ConnectFourGameState &other) :
-        currentPlayerMarker(other.currentPlayerMarker),
-        lastAction(other.lastAction),
-        gameResult(other.gameResult) {
-    for (int col = 0; col < WIDTH; ++col) {
-        for (int row = 0; row < HEIGHT; ++row)
-            board[row][col] = other.board[row][col];
-        colHeight[col] = other.getColHeight(col);
+ConnectFourGameState::ConnectFourGameState(const ConnectFourGameState &other) : currentPlayerMarker(other.currentPlayerMarker),
+                                                                                lastAction(other.lastAction),
+                                                                                gameResult(other.gameResult) {
+
+    auto &mapref = colHeight;
+    auto &other_mapref = other.colHeight;
+    for (int row = 0; row < HEIGHT; ++row) {
+        char *rowPtr = board[row];
+        const char *other_rowPtr = other.board[row];
+        for (int col = 0; col < WIDTH; ++col) {
+            rowPtr[col] = other_rowPtr[col];
+        }
     }
+    for (int col = 0; col < WIDTH; ++col)
+        mapref[col] = other_mapref.at(col);
 }
 
 ConnectFourGameState &ConnectFourGameState::operator=(const ConnectFourGameState &other) {
-    for (int col = 0; col < WIDTH; ++col) {
-        for (int row = 0; row < HEIGHT; ++row)
-            board[row][col] = other.board[row][col];
-        colHeight[col] = other.getColHeight(col);
+    auto &mapref = colHeight;
+    auto &other_mapref = other.colHeight;
+    for (int row = 0; row < HEIGHT; ++row) {
+        char *rowPtr = board[row];
+        const char *other_rowPtr = other.board[row];
+        for (int col = 0; col < WIDTH; ++col) {
+            rowPtr[col] = other_rowPtr[col];
+        }
     }
+
+    for (int col = 0; col < WIDTH; ++col)
+        mapref[col] = other_mapref.at(col);
 
     currentPlayerMarker = other.currentPlayerMarker;
     lastAction = other.lastAction;
@@ -230,12 +246,14 @@ bool ConnectFourGameState::isTerminal() const {
 }
 
 std::vector<ConnectFourAction> ConnectFourGameState::getLegalActions() const {
+    const auto &mapref = colHeight;
     std::vector<ConnectFourAction> actions;
     actions.reserve(WIDTH);
+    auto &vecRef = actions;
 
     for (int col = 0; col < WIDTH; ++col) {
-        if (getColHeight(col) < HEIGHT) {
-            actions.emplace_back(col, currentPlayerMarker);
+        if (mapref.at(col) < HEIGHT) {
+            vecRef.emplace_back(col, currentPlayerMarker);
         }
     }
 
@@ -306,8 +324,9 @@ std::string ConnectFourGameState::toString() const {
     std::stringstream ss;
 
     for (int row = HEIGHT - 1; row >= 0; --row) {
+        const char *rowPtr = board[row];
         for (int col = 0; col < WIDTH; ++col)
-            ss << board[row][col];
+            ss << rowPtr[col];
         ss << std::endl;
     }
 
