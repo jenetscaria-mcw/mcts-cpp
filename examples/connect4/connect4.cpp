@@ -5,9 +5,8 @@
  */
 #include "connect4.hpp"
 
-ConnectFourAction::ConnectFourAction(int col, PlayerMarker playerMarker) : col(col), playerMarker(playerMarker) {}
-
-ConnectFourAction::ConnectFourAction(const ConnectFourAction &other) : col(other.col), playerMarker(other.playerMarker) {}
+inline __attribute__((always_inline)) ConnectFourAction::ConnectFourAction(int col, PlayerMarker playerMarker) :
+    col(col), playerMarker(playerMarker) {}
 
 ConnectFourAction &ConnectFourAction::operator=(const ConnectFourAction &other) {
     col = other.col;
@@ -15,7 +14,7 @@ ConnectFourAction &ConnectFourAction::operator=(const ConnectFourAction &other) 
     return *this;
 }
 
-bool ConnectFourAction::isEmpty() const {
+inline __attribute__((always_inline)) bool ConnectFourAction::isEmpty() const {
     return playerMarker == EMPTY_MARKER || col == -1;
 }
 
@@ -23,13 +22,14 @@ bool ConnectFourAction::operator==(const ConnectFourAction &other) const {
     return col == other.col && playerMarker == other.playerMarker;
 }
 
-std::string ConnectFourAction::toString() const {
-    std::stringstream ss;
-    ss << "col = " << col << ", player = " << playerMarker;
-    return ss.str();
+inline __attribute__((always_inline)) std::string ConnectFourAction::toString() const {
+    // std::stringstream ss;
+    // ss << "col = " << col << ", player = " << playerMarker;
+    // return ss.str();
+    return "col = " + std::to_string(col) + ", player = " + std::to_string(playerMarker);
 }
 
-int ConnectFourGameState::getColHeight(int col) const {
+inline __attribute__((always_inline)) int ConnectFourGameState::getColHeight(int col) const {
     return colHeight.at(col);
 }
 
