@@ -23,9 +23,6 @@ bool ConnectFourAction::operator==(const ConnectFourAction &other) const {
 }
 
 inline __attribute__((always_inline)) std::string ConnectFourAction::toString() const {
-    // std::stringstream ss;
-    // ss << "col = " << col << ", player = " << playerMarker;
-    // return ss.str();
     return "col = " + std::to_string(col) + ", player = " + std::to_string(playerMarker);
 }
 
@@ -36,9 +33,13 @@ inline __attribute__((always_inline)) int ConnectFourGameState::getColHeight(int
 void ConnectFourGameState::resetBoard() {
     for (int row = 0; row < HEIGHT; ++row) {
         char *rowPtr = board[row];
-        for (int col = 0; col < WIDTH; ++col) {
-            rowPtr[col] = EMPTY_MARKER;
-        }
+        rowPtr[0] = EMPTY_MARKER;
+        rowPtr[1] = EMPTY_MARKER;
+        rowPtr[2] = EMPTY_MARKER;
+        rowPtr[3] = EMPTY_MARKER;
+        rowPtr[4] = EMPTY_MARKER;
+        rowPtr[5] = EMPTY_MARKER;
+        rowPtr[6] = EMPTY_MARKER;
     }
     auto &mapref = colHeight;
     for (int col = 0; col < WIDTH; ++col) {
@@ -52,9 +53,13 @@ void ConnectFourGameState::switchPlayer() {
 
 bool ConnectFourGameState::checkDraw() const {
     const auto &mapref = colHeight;
-    for (int col = 0; col < WIDTH; ++col)
-        if (mapref.at(col) < HEIGHT)
-            return false;
+    if (mapref.at(0) < HEIGHT) return false;
+    if (mapref.at(1) < HEIGHT) return false;
+    if (mapref.at(2) < HEIGHT) return false;
+    if (mapref.at(3) < HEIGHT) return false;
+    if (mapref.at(4) < HEIGHT) return false;
+    if (mapref.at(5) < HEIGHT) return false;
+    if (mapref.at(6) < HEIGHT) return false;
 
     return true;
 }
@@ -325,8 +330,13 @@ std::string ConnectFourGameState::toString() const {
 
     for (int row = HEIGHT - 1; row >= 0; --row) {
         const char *rowPtr = board[row];
-        for (int col = 0; col < WIDTH; ++col)
-            ss << rowPtr[col];
+        ss << rowPtr[0];
+        ss << rowPtr[1];
+        ss << rowPtr[2];
+        ss << rowPtr[3];
+        ss << rowPtr[4];
+        ss << rowPtr[5];
+        ss << rowPtr[6];
         ss << std::endl;
     }
 
