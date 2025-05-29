@@ -5,8 +5,7 @@
  */
 #include "connect4.hpp"
 
-inline __attribute__((always_inline)) ConnectFourAction::ConnectFourAction(int col, PlayerMarker playerMarker) :
-    col(col), playerMarker(playerMarker) {}
+inline __attribute__((always_inline)) ConnectFourAction::ConnectFourAction(int col, PlayerMarker playerMarker) : col(col), playerMarker(playerMarker) {}
 
 ConnectFourAction &ConnectFourAction::operator=(const ConnectFourAction &other) {
     col = other.col;
@@ -18,7 +17,7 @@ inline __attribute__((always_inline)) bool ConnectFourAction::isEmpty() const {
     return playerMarker == EMPTY_MARKER || col == -1;
 }
 
-bool ConnectFourAction::operator==(const ConnectFourAction &other) const {
+inline __attribute__((always_inline)) bool ConnectFourAction::operator==(const ConnectFourAction &other) const {
     return col == other.col && playerMarker == other.playerMarker;
 }
 
@@ -47,7 +46,7 @@ void ConnectFourGameState::resetBoard() {
     }
 }
 
-void ConnectFourGameState::switchPlayer() {
+inline __attribute__((always_inline)) void ConnectFourGameState::switchPlayer() {
     currentPlayerMarker = currentPlayerMarker == PLAYER_1_MARKER ? PLAYER_2_MARKER : PLAYER_1_MARKER;
 }
 
@@ -246,7 +245,7 @@ void ConnectFourGameState::makeAction(const ConnectFourAction &action) {
     lastAction = action;
 }
 
-bool ConnectFourGameState::isTerminal() const {
+inline __attribute__((always_inline)) bool ConnectFourGameState::isTerminal() const {
     return gameResult != NOT_FINISHED;
 }
 
